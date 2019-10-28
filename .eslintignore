@@ -3,7 +3,7 @@ src/serviceWorker.js
 **/*.css
 **/*.scss
 
+**/fonts
+
 **/*.svg
 **/*.png
-
-**/fonts
