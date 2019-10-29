@@ -177,7 +177,7 @@ Filter.defaultProps = {
 FilterItem.propTypes = {
   label: PropTypes.string,
   onChange: PropTypes.func,
-  id: PropTypes.number,
+  id: PropTypes.string,
   checked: PropTypes.bool,
 };
 

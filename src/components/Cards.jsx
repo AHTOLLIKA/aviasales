@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import lodash from 'lodash';
-import logo from './images/S7_Logo.png';
 
 const Card = styled.div`
   width: 100%;
@@ -110,7 +109,7 @@ const Cards = ({ tickets }) =>
     <Card key={lodash.uniqueId()}>
       <Row>
         <Price>{price.toLocaleString('ru-RU')} P</Price>
-        <Logo src={logo} alt={carrier} />
+        <Logo src={`//pics.avs.io/99/36/${carrier}.png`} alt={carrier} />
       </Row>
       {segments.map(item => (
         <Segment key={lodash.uniqueId()} {...item} />
