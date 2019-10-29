@@ -116,7 +116,23 @@ const FilterItem = ({ label, onChange, id, checked }) => (
   </StyledFilterItem>
 );
 
+FilterItem.propTypes = {
+  label: PropTypes.string,
+  onChange: PropTypes.func,
+  id: PropTypes.string,
+  checked: PropTypes.bool,
+};
+
+FilterItem.defaultProps = {
+  label: '',
+  onChange: null,
+  id: lodash.uniqueId(),
+  checked: false,
+};
+
 class Filter extends React.PureComponent {
+  static FilterItem = FilterItem;
+
   changeAllFilters = event => {
     const { checked } = event.target;
     const { changeFilter } = this.props;
@@ -143,14 +159,14 @@ class Filter extends React.PureComponent {
     return (
       <StyledFilter>
         <Title>Количество пересадок</Title>
-        <FilterItem
+        <Filter.FilterItem
           id={lodash.uniqueId('id')}
           label="Все"
           checked={numOfChange.length >= allFilters.length}
           onChange={this.changeAllFilters}
         />
         {allFilters.map(({ label, value }) => (
-          <FilterItem
+          <Filter.FilterItem
             key={lodash.uniqueId()}
             id={lodash.uniqueId('id')}
             label={label}
@@ -172,20 +188,6 @@ Filter.propTypes = {
 Filter.defaultProps = {
   changeFilter: null,
   numOfChange: [0],
-};
-
-FilterItem.propTypes = {
-  label: PropTypes.string,
-  onChange: PropTypes.func,
-  id: PropTypes.string,
-  checked: PropTypes.bool,
-};
-
-FilterItem.defaultProps = {
-  label: '',
-  onChange: null,
-  id: lodash.uniqueId(),
-  checked: false,
 };
 
 export default Filter;

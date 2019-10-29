@@ -104,6 +104,22 @@ const Segment = ({ origin, destination, date, stops, duration }) => {
   );
 };
 
+Segment.propTypes = {
+  origin: PropTypes.string,
+  destination: PropTypes.string,
+  date: PropTypes.string,
+  stops: PropTypes.arrayOf(PropTypes.string),
+  duration: PropTypes.number,
+};
+
+Segment.defaultProps = {
+  origin: '',
+  destination: '',
+  date: '',
+  stops: [],
+  duration: 0,
+};
+
 const Cards = ({ tickets }) =>
   tickets.map(({ price, carrier, segments }) => (
     <Card key={lodash.uniqueId()}>
@@ -123,22 +139,6 @@ Cards.propTypes = {
 
 Cards.defaultProps = {
   tickets: [],
-};
-
-Segment.propTypes = {
-  origin: PropTypes.string,
-  destination: PropTypes.string,
-  date: PropTypes.string,
-  stops: PropTypes.arrayOf(PropTypes.string),
-  duration: PropTypes.number,
-};
-
-Segment.defaultProps = {
-  origin: '',
-  destination: '',
-  date: '',
-  stops: [],
-  duration: 0,
 };
 
 export default Cards;

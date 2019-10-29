@@ -17,11 +17,10 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tickets: [],
+      allTickets: [],
       currentTickets: [],
       numOfChange: [0],
       sortName: 'price',
-      isLoaded: false,
     };
   }
 
@@ -40,13 +39,13 @@ class Main extends React.Component {
       const { stop, tickets } = res.data;
       const currentTickets = [...acc, ...tickets];
       if (stop) {
-        this.setState({ tickets: currentTickets, currentTickets }, this.filterTickets);
+        this.setState({ allTickets: currentTickets, currentTickets }, this.filterTickets);
       } else {
         this.getTickets(searchId, currentTickets);
       }
     } catch (error) {
       if (error.message === 'Request failed with status code 500') {
-        this.getTickets(searchId, [...acc]);
+        this.getTickets(searchId, acc);
         return false;
       }
     }
@@ -62,8 +61,8 @@ class Main extends React.Component {
   };
 
   filterTickets = () => {
-    const { numOfChange, tickets } = this.state;
-    const currentTickets = tickets.filter(({ segments }) => {
+    const { numOfChange, allTickets } = this.state;
+    const currentTickets = allTickets.filter(({ segments }) => {
       return segments.every(({ stops }) => {
         return numOfChange.includes(stops.length);
       });
@@ -93,24 +92,24 @@ class Main extends React.Component {
       const duration2 = segments2.reduce((acc, { duration }) => acc + duration, 0);
       return duration1 - duration2;
     });
-    this.setState({ currentTickets: tickets, isLoaded: true });
+    this.setState({ currentTickets: tickets });
   };
 
   sortTicketsByPrice = () => {
     const { currentTickets } = this.state;
     const tickets = currentTickets.sort(({ price: price1 }, { price: price2 }) => price1 - price2);
-    this.setState({ currentTickets: tickets, isLoaded: true });
+    this.setState({ currentTickets: tickets });
   };
 
   render() {
-    const { currentTickets, numOfChange, sortName, isLoaded } = this.state;
+    const { currentTickets, numOfChange, sortName } = this.state;
 
     return (
       <StyledMain>
         <Filter numOfChange={numOfChange} changeFilter={this.changeFilter} />
         <div>
           <Tabs changeSort={this.changeSort} sortName={sortName} />
-          {isLoaded && <Cards tickets={currentTickets.slice(0, 5)} />}
+          {<Cards tickets={currentTickets.slice(0, 5)} />}
         </div>
       </StyledMain>
     );
