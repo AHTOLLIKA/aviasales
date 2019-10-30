@@ -30,7 +30,7 @@ class Main extends React.Component {
       currentTickets: [],
       numOfTransfers: [0],
       sortName: 'price',
-      isLoad: false,
+      isLoaded: false,
     };
   }
 
@@ -56,7 +56,7 @@ class Main extends React.Component {
         this.setState({ allTickets: currentTickets, currentTickets }, this.filterTickets);
         this.timerId = setTimeout(() => this.getTickets(searchId, currentTickets), 800);
       } else {
-        this.setState({ isLoad: false });
+        this.setState({ isLoaded: true });
       }
     } catch (error) {
       if (error.message === 'Request failed with status code 500') {
@@ -117,15 +117,15 @@ class Main extends React.Component {
   };
 
   render() {
-    const { currentTickets, numOfTransfers, sortName, isLoad } = this.state;
+    const { currentTickets, numOfTransfers, sortName, isLoaded } = this.state;
 
     return (
       <StyledMain>
         <Filter numOfTransfers={numOfTransfers} changeFilter={this.changeFilter} />
         <Container>
-          <Loader isActive={isLoad} />
+          <Loader isActive={!isLoaded} />
           <Tabs changeSort={this.changeSort} sortName={sortName} />
-          <Cards tickets={currentTickets.slice(0, 5)} isLoad={isLoad} />
+          <Cards tickets={currentTickets.slice(0, 5)} isLoad={isLoaded} />
         </Container>
       </StyledMain>
     );
