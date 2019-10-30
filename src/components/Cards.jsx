@@ -121,9 +121,9 @@ Segment.defaultProps = {
   stops: [],
 };
 
-const Cards = ({ tickets }) => (
+const Cards = ({ tickets, isLoad }) => (
   <>
-    {tickets.length === 0 && (
+    {isLoad && tickets.length === 0 && (
       <Message>Извините, ни один рейс не соответствует указанным фильтрам</Message>
     )}
     {tickets.map(({ price, carrier, segments }) => (
@@ -142,10 +142,12 @@ const Cards = ({ tickets }) => (
 
 Cards.propTypes = {
   tickets: PropTypes.arrayOf(PropTypes.object),
+  isLoad: PropTypes.bool,
 };
 
 Cards.defaultProps = {
   tickets: [],
+  isLoad: false,
 };
 
 export default Cards;

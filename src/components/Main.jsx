@@ -125,7 +125,7 @@ class Main extends React.Component {
         <Container>
           <Loader isActive={isLoad} />
           <Tabs changeSort={this.changeSort} sortName={sortName} />
-          {<Cards tickets={currentTickets.slice(0, 5)} />}
+          <Cards tickets={currentTickets.slice(0, 5)} isLoad={isLoad} />
         </Container>
       </StyledMain>
     );
