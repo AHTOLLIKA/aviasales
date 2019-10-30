@@ -54,7 +54,7 @@ class Main extends React.Component {
       const currentTickets = [...acc, ...tickets];
       if (!stop) {
         this.setState({ allTickets: currentTickets, currentTickets }, this.filterTickets);
-        this.timerId = setTimeout(() => this.getTickets(searchId, currentTickets), 100);
+        this.timerId = setTimeout(() => this.getTickets(searchId, currentTickets), 800);
       } else {
         this.setState({ isLoad: false });
       }
