@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import colors from './colors';
+
 const StyledTabs = styled.div`
-  width: 504px;
+  width: 100%;
   height: 52px;
   margin-bottom: 20px;
   display: flex;
@@ -16,8 +18,8 @@ const Tab = styled.button`
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
-  color: ${props => (props.active ? '#fff' : '#000')};
-  background-color: ${props => (props.active ? '#2196f3' : '#fff')};
+  color: ${props => (props.active ? '#fff' : `${colors.fontMain}`)};
+  background-color: ${props => (props.active ? `${colors.blue}` : '#fff')};
   border: ${props => (props.active ? 'none' : '1px solid #dfe5ec')};
   cursor: pointer;
 `;
@@ -30,7 +32,7 @@ const RightTab = styled(Tab)`
   border-radius: 0 5px 5px 0;
 `;
 
-const Tabs = ({ changeSort, sortName }) => (
+const Tabs = React.memo(({ changeSort, sortName }) => (
   <StyledTabs>
     <LeftTab active={sortName === 'price'} data-value="price" onClick={changeSort}>
       Самый дешевый
@@ -39,15 +41,14 @@ const Tabs = ({ changeSort, sortName }) => (
       Самый быстрый
     </RightTab>
   </StyledTabs>
-);
+));
 
 Tabs.propTypes = {
-  changeSort: PropTypes.func,
+  changeSort: PropTypes.func.isRequired,
   sortName: PropTypes.string,
 };
 
 Tabs.defaultProps = {
-  changeSort: null,
   sortName: 'price',
 };
 

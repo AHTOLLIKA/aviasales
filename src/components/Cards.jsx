@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import colors from './colors';
+
 const Card = styled.div`
   width: 100%;
   margin-bottom: 20px;
@@ -24,7 +26,7 @@ const Row = styled.div`
 `;
 
 const Price = styled.h3`
-  color: #2196f3;
+  color: ${colors.blue};
   font-size: 24px;
   font-weight: 500;
   line-height: 1;
@@ -41,7 +43,7 @@ const CardItem = styled.div`
 `;
 
 const CardItemTitle = styled.div`
-  color: #a0b0b9;
+  color: ${colors.fontLight};
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 1px;
@@ -50,10 +52,14 @@ const CardItemTitle = styled.div`
 `;
 
 const CardItemText = styled.div`
-  color: #4a4a4a;
   font-size: 14px;
   line-height: 21px;
   font-weight: 600;
+`;
+
+const Message = styled.div`
+  text-align: center;
+  font-size: 18px;
 `;
 
 const Segment = ({ origin, destination, date, stops, duration }) => {
@@ -104,33 +110,35 @@ const Segment = ({ origin, destination, date, stops, duration }) => {
 };
 
 Segment.propTypes = {
-  origin: PropTypes.string,
-  destination: PropTypes.string,
-  date: PropTypes.string,
+  origin: PropTypes.string.isRequired,
+  destination: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
   stops: PropTypes.arrayOf(PropTypes.string),
-  duration: PropTypes.number,
+  duration: PropTypes.number.isRequired,
 };
 
 Segment.defaultProps = {
-  origin: '',
-  destination: '',
-  date: '',
   stops: [],
-  duration: 0,
 };
 
-const Cards = ({ tickets }) =>
-  tickets.map(({ price, carrier, segments }) => (
-    <Card key={price + carrier + segments[0].stops}>
-      <Row>
-        <Price>{price.toLocaleString('ru-RU')} P</Price>
-        <Logo src={`//pics.avs.io/99/36/${carrier}.png`} alt={carrier} />
-      </Row>
-      {segments.map(item => (
-        <Segment key={item.date} {...item} />
-      ))}
-    </Card>
-  ));
+const Cards = ({ tickets }) => (
+  <>
+    {tickets.length === 0 && (
+      <Message>Извините, ни один рейс не соответствует указанным фильтрам</Message>
+    )}
+    {tickets.map(({ price, carrier, segments }) => (
+      <Card key={price + carrier + segments[0].stops}>
+        <Row>
+          <Price>{price.toLocaleString('ru-RU')} P</Price>
+          <Logo src={`//pics.avs.io/99/36/${carrier}.png`} alt={carrier} />
+        </Row>
+        {segments.map(item => (
+          <Segment key={item.date} {...item} />
+        ))}
+      </Card>
+    ))}
+  </>
+);
 
 Cards.propTypes = {
   tickets: PropTypes.arrayOf(PropTypes.object),

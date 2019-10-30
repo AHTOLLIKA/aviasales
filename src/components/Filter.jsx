@@ -2,12 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import colors from './colors';
+
 const StyledFilter = styled.div`
   width: 232px;
-  color: #4a4a4a;
+  margin-bottom: 20px;
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Title = styled.h4`
@@ -44,7 +49,7 @@ const StyledFilterItem = styled.div`
   .checkbox__field {
     display: none;
     &:checked + .checkbox__face {
-      border: 1px solid #2196f3;
+      border: 1px solid ${colors.blue};
       &:after {
         opacity: 1;
       }
@@ -97,7 +102,7 @@ const allFilters = [
   },
 ];
 
-const FilterItem = ({ label, onChange, checked }) => (
+const FilterItem = React.memo(({ label, onChange, checked }) => (
   <StyledFilterItem>
     <label htmlFor={label}>
       <span className="checkbox">
@@ -113,17 +118,15 @@ const FilterItem = ({ label, onChange, checked }) => (
       {label}
     </label>
   </StyledFilterItem>
-);
+));
 
 FilterItem.propTypes = {
-  label: PropTypes.string,
-  onChange: PropTypes.func,
+  label: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
   checked: PropTypes.bool,
 };
 
 FilterItem.defaultProps = {
-  label: '',
-  onChange: () => {},
   checked: false,
 };
 
@@ -142,23 +145,23 @@ class Filter extends React.PureComponent {
 
   changeFilter = value => event => {
     const { checked } = event.target;
-    const { changeFilter, numOfChange } = this.props;
+    const { changeFilter, numOfTransfers } = this.props;
     if (checked) {
-      changeFilter([...numOfChange, value]);
+      changeFilter([...numOfTransfers, value]);
     } else {
-      changeFilter(numOfChange.filter(item => item !== value));
+      changeFilter(numOfTransfers.filter(item => item !== value));
     }
   };
 
   render() {
-    const { numOfChange } = this.props;
+    const { numOfTransfers } = this.props;
 
     return (
       <StyledFilter>
         <Title>Количество пересадок</Title>
         <Filter.FilterItem
           label="Все"
-          checked={numOfChange.length >= allFilters.length}
+          checked={numOfTransfers.length >= allFilters.length}
           onChange={this.changeAllFilters}
         />
         {allFilters.map(({ label, value }) => (
@@ -166,7 +169,7 @@ class Filter extends React.PureComponent {
             key={label}
             label={label}
             value={value}
-            checked={numOfChange.includes(value)}
+            checked={numOfTransfers.includes(value)}
             onChange={this.changeFilter(value)}
           />
         ))}
@@ -176,13 +179,12 @@ class Filter extends React.PureComponent {
 }
 
 Filter.propTypes = {
-  changeFilter: PropTypes.func,
-  numOfChange: PropTypes.arrayOf(PropTypes.number),
+  changeFilter: PropTypes.func.isRequired,
+  numOfTransfers: PropTypes.arrayOf(PropTypes.number),
 };
 
 Filter.defaultProps = {
-  changeFilter: () => {},
-  numOfChange: [0],
+  numOfTransfers: [0],
 };
 
 export default Filter;

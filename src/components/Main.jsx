@@ -4,13 +4,22 @@ import axios from 'axios';
 import Filter from './Filter';
 import Tabs from './Tabs';
 import Cards from './Cards';
+import Loader from './Loader';
 
 const StyledMain = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  width: 754px;
+  flex-wrap: wrap;
+  max-width: 754px;
   margin: auto;
+`;
+
+const Container = styled.div`
+  width: 504px;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 class Main extends React.Component {
@@ -19,8 +28,9 @@ class Main extends React.Component {
     this.state = {
       allTickets: [],
       currentTickets: [],
-      numOfChange: [0],
+      numOfTransfers: [0],
       sortName: 'price',
+      isLoad: true,
     };
   }
 
@@ -29,6 +39,10 @@ class Main extends React.Component {
     const { searchId } = res.data;
     this.searchId = searchId;
     this.getTickets(searchId);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timerId);
   }
 
   getTickets = async (searchId, acc = []) => {
@@ -40,7 +54,9 @@ class Main extends React.Component {
       const currentTickets = [...acc, ...tickets];
       if (!stop) {
         this.setState({ allTickets: currentTickets, currentTickets }, this.filterTickets);
-        setTimeout(() => this.getTickets(searchId, currentTickets), 1000);
+        this.timerId = setTimeout(() => this.getTickets(searchId, currentTickets), 100);
+      } else {
+        this.setState({ isLoad: false });
       }
     } catch (error) {
       if (error.message === 'Request failed with status code 500') {
@@ -51,8 +67,8 @@ class Main extends React.Component {
     return false;
   };
 
-  changeFilter = numOfChange => {
-    this.setState({ numOfChange }, this.filterTickets);
+  changeFilter = numOfTransfers => {
+    this.setState({ numOfTransfers }, this.filterTickets);
   };
 
   changeSort = event => {
@@ -60,10 +76,10 @@ class Main extends React.Component {
   };
 
   filterTickets = () => {
-    const { numOfChange, allTickets } = this.state;
+    const { numOfTransfers, allTickets } = this.state;
     const currentTickets = allTickets.filter(({ segments }) => {
       return segments.every(({ stops }) => {
-        return numOfChange.includes(stops.length);
+        return numOfTransfers.includes(stops.length);
       });
     });
     this.setState({ currentTickets }, this.sortTickets);
@@ -101,15 +117,16 @@ class Main extends React.Component {
   };
 
   render() {
-    const { currentTickets, numOfChange, sortName } = this.state;
+    const { currentTickets, numOfTransfers, sortName, isLoad } = this.state;
 
     return (
       <StyledMain>
-        <Filter numOfChange={numOfChange} changeFilter={this.changeFilter} />
-        <div>
+        <Filter numOfTransfers={numOfTransfers} changeFilter={this.changeFilter} />
+        <Container>
+          <Loader isActive={isLoad} />
           <Tabs changeSort={this.changeSort} sortName={sortName} />
           {<Cards tickets={currentTickets.slice(0, 5)} />}
-        </div>
+        </Container>
       </StyledMain>
     );
   }
