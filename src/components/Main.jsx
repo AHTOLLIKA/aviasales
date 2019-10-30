@@ -9,7 +9,7 @@ const StyledMain = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  max-width: 754px;
+  width: 754px;
   margin: auto;
 `;
 
@@ -38,10 +38,9 @@ class Main extends React.Component {
       });
       const { stop, tickets } = res.data;
       const currentTickets = [...acc, ...tickets];
-      if (stop) {
+      if (!stop) {
         this.setState({ allTickets: currentTickets, currentTickets }, this.filterTickets);
-      } else {
-        this.getTickets(searchId, currentTickets);
+        setTimeout(() => this.getTickets(searchId, currentTickets), 1000);
       }
     } catch (error) {
       if (error.message === 'Request failed with status code 500') {

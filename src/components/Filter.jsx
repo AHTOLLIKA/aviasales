@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import lodash from 'lodash';
 
 const StyledFilter = styled.div`
   width: 232px;
@@ -98,14 +97,14 @@ const allFilters = [
   },
 ];
 
-const FilterItem = ({ label, onChange, id, checked }) => (
+const FilterItem = ({ label, onChange, checked }) => (
   <StyledFilterItem>
-    <label htmlFor={id}>
+    <label htmlFor={label}>
       <span className="checkbox">
         <input
           className="checkbox__field"
           type="checkbox"
-          id={id}
+          id={label}
           onChange={onChange}
           checked={checked}
         />
@@ -119,14 +118,12 @@ const FilterItem = ({ label, onChange, id, checked }) => (
 FilterItem.propTypes = {
   label: PropTypes.string,
   onChange: PropTypes.func,
-  id: PropTypes.string,
   checked: PropTypes.bool,
 };
 
 FilterItem.defaultProps = {
   label: '',
-  onChange: null,
-  id: lodash.uniqueId(),
+  onChange: () => {},
   checked: false,
 };
 
@@ -160,15 +157,13 @@ class Filter extends React.PureComponent {
       <StyledFilter>
         <Title>Количество пересадок</Title>
         <Filter.FilterItem
-          id={lodash.uniqueId('id')}
           label="Все"
           checked={numOfChange.length >= allFilters.length}
           onChange={this.changeAllFilters}
         />
         {allFilters.map(({ label, value }) => (
           <Filter.FilterItem
-            key={lodash.uniqueId()}
-            id={lodash.uniqueId('id')}
+            key={label}
             label={label}
             value={value}
             checked={numOfChange.includes(value)}
@@ -186,7 +181,7 @@ Filter.propTypes = {
 };
 
 Filter.defaultProps = {
-  changeFilter: null,
+  changeFilter: () => {},
   numOfChange: [0],
 };
 

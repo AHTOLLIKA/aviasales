@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import lodash from 'lodash';
 
 const Card = styled.div`
   width: 100%;
@@ -81,7 +80,7 @@ const Segment = ({ origin, destination, date, stops, duration }) => {
   }
 
   return (
-    <Row ket={lodash.uniqueId()}>
+    <Row>
       <CardItem>
         <CardItemTitle>
           {origin} – {destination}
@@ -122,13 +121,13 @@ Segment.defaultProps = {
 
 const Cards = ({ tickets }) =>
   tickets.map(({ price, carrier, segments }) => (
-    <Card key={lodash.uniqueId()}>
+    <Card key={price + carrier + segments[0].stops}>
       <Row>
         <Price>{price.toLocaleString('ru-RU')} P</Price>
         <Logo src={`//pics.avs.io/99/36/${carrier}.png`} alt={carrier} />
       </Row>
       {segments.map(item => (
-        <Segment key={lodash.uniqueId()} {...item} />
+        <Segment key={item.date} {...item} />
       ))}
     </Card>
   ));
