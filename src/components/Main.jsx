@@ -30,7 +30,7 @@ class Main extends React.Component {
       currentTickets: [],
       numOfTransfers: [0],
       sortName: 'price',
-      isLoad: true,
+      isLoad: false,
     };
   }
 
