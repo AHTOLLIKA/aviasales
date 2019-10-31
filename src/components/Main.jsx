@@ -52,11 +52,12 @@ class Main extends React.Component {
       });
       const { stop, tickets } = res.data;
       const currentTickets = [...acc, ...tickets];
+      this.setState(
+        { allTickets: currentTickets, currentTickets, isLoaded: stop },
+        this.filterTickets
+      );
       if (!stop) {
-        this.setState({ allTickets: currentTickets, currentTickets }, this.filterTickets);
         this.timerId = setTimeout(() => this.getTickets(searchId, currentTickets), 800);
-      } else {
-        this.setState({ isLoaded: true });
       }
     } catch (error) {
       if (error.message === 'Request failed with status code 500') {
