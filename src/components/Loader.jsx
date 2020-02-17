@@ -45,11 +45,11 @@ const StyledLoader = styled.div`
   transition: opacity 0.2s linear;
 `;
 
-const Loader = React.memo(({ isActive }) => (
+const Loader = ({ isActive }) => (
   <LoaderContainer>
     <StyledLoader isActive={isActive} />
   </LoaderContainer>
-));
+);
 
 Loader.propTypes = {
   isActive: PropTypes.bool,
@@ -59,4 +59,4 @@ Loader.defaultProps = {
   isActive: false,
 };
 
-export default Loader;
+export default React.memo(Loader);

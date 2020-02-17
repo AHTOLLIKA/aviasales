@@ -18,9 +18,9 @@ const Tab = styled.button`
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
-  color: ${props => (props.active ? '#fff' : `${colors.fontMain}`)};
-  background-color: ${props => (props.active ? `${colors.blue}` : '#fff')};
-  border: ${props => (props.active ? 'none' : '1px solid #dfe5ec')};
+  color: ${props => (props.isActive ? '#fff' : `${colors.fontMain}`)};
+  background-color: ${props => (props.isActive ? `${colors.blue}` : '#fff')};
+  border: ${props => (props.isActive ? 'none' : '1px solid #dfe5ec')};
   cursor: pointer;
 `;
 
@@ -32,16 +32,24 @@ const RightTab = styled(Tab)`
   border-radius: 0 5px 5px 0;
 `;
 
-const Tabs = React.memo(({ changeSort, sortName }) => (
+const changeSortToPice = changeSort => () => {
+  changeSort('price');
+};
+
+const changeSortToSpeed = changeSort => () => {
+  changeSort('speed');
+};
+
+const Tabs = ({ changeSort, sortName }) => (
   <StyledTabs>
-    <LeftTab active={sortName === 'price'} data-value="price" onClick={changeSort}>
+    <LeftTab isActive={sortName === 'price'} onClick={changeSortToPice(changeSort)}>
       Самый дешевый
     </LeftTab>
-    <RightTab active={sortName === 'speed'} data-value="speed" onClick={changeSort}>
+    <RightTab isActive={sortName === 'speed'} onClick={changeSortToSpeed(changeSort)}>
       Самый быстрый
     </RightTab>
   </StyledTabs>
-));
+);
 
 Tabs.propTypes = {
   changeSort: PropTypes.func.isRequired,
@@ -52,4 +60,4 @@ Tabs.defaultProps = {
   sortName: 'price',
 };
 
-export default Tabs;
+export default React.memo(Tabs);

@@ -102,7 +102,7 @@ const allFilters = [
   },
 ];
 
-const FilterItem = React.memo(({ label, onChange, checked }) => (
+const FilterItem = ({ label, onChange, checked }) => (
   <StyledFilterItem>
     <label htmlFor={label}>
       <span className="checkbox">
@@ -118,7 +118,7 @@ const FilterItem = React.memo(({ label, onChange, checked }) => (
       {label}
     </label>
   </StyledFilterItem>
-));
+);
 
 FilterItem.propTypes = {
   label: PropTypes.string.isRequired,

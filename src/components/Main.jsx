@@ -72,8 +72,8 @@ class Main extends React.Component {
     this.setState({ numOfTransfers }, this.filterTickets);
   };
 
-  changeSort = event => {
-    this.setState({ sortName: event.target.dataset.value }, this.sortTickets);
+  changeSort = sortName => {
+    this.setState({ sortName }, this.sortTickets);
   };
 
   filterTickets = () => {
