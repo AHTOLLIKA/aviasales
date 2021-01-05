@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://ahtollika.github.io/aviasales/build/",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-eslint": "^10.0.3",
     "eslint-config-prettier": "^6.4.0",
     "eslint-plugin-prettier": "^3.1.1",
